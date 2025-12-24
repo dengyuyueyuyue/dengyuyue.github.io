@@ -2,7 +2,7 @@
 # Banner
 banner:
   title: "From forestGEO Jianfengling Plot (50ha)"
-  content: "王菡淼看到没"
+  content: "王菡淼."
   image: "/images/banner.png"
   button:
     enable: true
