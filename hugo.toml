@@ -1,9 +1,13 @@
 ######################## default configuration ####################
 # The base URL of your site (required). This will be prepended to all relative URLs.
+<<<<<<< HEAD
 # baseURL will be set dynamically by GitHub Actions
 # For local development, use: hugo server
 # For production, GitHub Actions will override this with the correct baseURL
 baseURL = "/"
+=======
+baseURL = " https://dengyuyueyuyue.github.io/dengyuyue.github.io/"
+>>>>>>> 4b5e3024968102aa6df5db819f1dfb643d3f6cc5
 # Title of your website (required).
 title = "Hugoplate"
 # Your theme name

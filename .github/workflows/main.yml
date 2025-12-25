@@ -58,7 +58,11 @@ jobs:
         run: npm install
 
       - name: Build site
-        run: npm run build
+        run: |
+          npm run project-setup || true
+          npm install
+          node scripts/themeGenerator.js
+          hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3.0.1
