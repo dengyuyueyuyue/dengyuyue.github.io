@@ -2,7 +2,7 @@
 # Banner
 banner:
   title: "From ForestGEO Jianfengling Plot (50ha)"
-  content: "王菡淼是猪."
+  content: "Welcome to Han's lab page, we ."
   image: "/images/banner.png"
   button:
     enable: true
