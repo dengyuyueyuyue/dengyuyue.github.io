@@ -1,0 +1,76 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        {{ $pubs := .Site.Data.publications.publications | default slice }}
+        {{ range $pubs }}
+          <div class="md:col-6 lg:col-4 mb-8">
+            <div class="bg-body dark:bg-darkmode-body rounded p-6 h-full">
+              <h3 class="h4 mb-3">
+                <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary">
+                  {{ .title }}
+                </a>
+              </h3>
+              
+              <div class="mb-3">
+                <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
+                  <strong>Authors:</strong> {{ delimit .authors ", " }}
+                </p>
+                <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
+                  <strong>Journal:</strong> {{ .journal }}{{ if .volume }}, Vol. {{ .volume }}{{ end }}{{ if .pages }}, pp. {{ .pages }}{{ end }}, {{ .year }}
+                </p>
+                {{ if .doi }}
+                  <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
+                    <strong>DOI:</strong> 
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+                      {{ .doi }}
+                    </a>
+                  </p>
+                {{ end }}
+                {{ if .pmid }}
+                  <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
+                    <strong>PubMed ID:</strong> 
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/{{ .pmid }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
+                      {{ .pmid }}
+                    </a>
+                  </p>
+                {{ end }}
+              </div>
+
+              {{ if .abstract }}
+                <p class="mb-4 text-sm">{{ .abstract | truncate 150 }}</p>
+              {{ end }}
+
+              {{ if .categories }}
+                <div class="mb-3">
+                  {{ range .categories }}
+                    <span class="inline-block bg-light dark:bg-darkmode-light rounded px-2 py-1 text-xs mr-2 mb-2">
+                      {{ . }}
+                    </span>
+                  {{ end }}
+                </div>
+              {{ end }}
+
+              {{ if .tags }}
+                <div class="mb-4">
+                  {{ range .tags }}
+                    <span class="inline-block bg-primary/10 dark:bg-darkmode-primary/20 rounded px-2 py-1 text-xs mr-2 mb-2">
+                      {{ . }}
+                    </span>
+                  {{ end }}
+                </div>
+              {{ end }}
+
+              <a class="btn btn-outline-primary btn-sm" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+                View Publication
+              </a>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+{{ end }}
+

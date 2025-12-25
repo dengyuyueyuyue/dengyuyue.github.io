@@ -1,0 +1,22 @@
+categories:
+  - "Forest Data"
+  - "Climate Data"
+  - "Biodiversity Data"
+  - "Remote Sensing"
+
+items:
+  - title: "Sample Forest Dataset"
+    description: "Example forest dynamics data from research plots"
+    categories:
+      - "Forest Data"
+    url: "https://example.com/data1"
+  
+  - title: "Climate Dataset"
+    description: "Long-term climate observations"
+    categories:
+      - "Climate Data"
+    url: "https://example.com/data2"
+
+
+
+

@@ -1,0 +1,170 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  <section class="section pt-0">
+    <div class="container">
+      {{/* Show data sources as filter */}}
+      <div class="mb-8 -mt-4">
+        <div class="bg-light dark:bg-darkmode-light rounded p-6 text-center">
+          <ul id="data-sources-list">
+            <li class="inline-block m-2">
+              <button
+                id="show-all-btn"
+                class="category-filter-btn text-text-dark dark:text-darkmode-text-dark hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded bg-white px-3 py-1 hover:text-white cursor-pointer transition-all duration-200 active:scale-95">
+                {{ T "show_all" | default "Show All" }}
+              </button>
+            </li>
+            {{ $cats := .Site.Data.data_sources.categories | default slice }}
+            {{ range $cats }}
+              <li class="inline-block m-2">
+                <button
+                  data-category="{{ . | lower }}"
+                  class="category-filter-btn text-text-dark dark:text-darkmode-text-dark hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded bg-white px-3 py-1 hover:text-white cursor-pointer transition-all duration-200 active:scale-95">
+                  {{ . }}
+                </button>
+              </li>
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+
+      {{/* Show all data sources */}}
+      {{ $dataSources := .Site.Data.data_sources.items | default slice }}
+
+      <div class="mt-8">
+        <div class="row" id="data-sources-container">
+          {{ range $dataSources }}
+              <div
+                class="md:col-6 mb-14 data-source-item"
+                data-categories="{{ if .categories }}{{ range .categories }}{{ . | lower }} {{ end }}{{ end }}">
+                <div class="bg-body dark:bg-darkmode-body rounded p-6">
+                  <h3 class="mb-3">
+                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+                      {{ .title }}
+                    </a>
+                  </h3>
+                  {{ if .description }}
+                    <p class="mb-4">{{ .description }}</p>
+                  {{ end }}
+                  {{ if .categories }}
+                    <div class="mb-4">
+                      {{ range .categories }}
+                        <span class="inline-block bg-light dark:bg-darkmode-light rounded px-2 py-1 text-sm mr-2 mb-2">
+                          {{ . }}
+                        </span>
+                      {{ end }}
+                    </div>
+                  {{ end }}
+                  {{ if .url }}
+                    <a class="btn btn-outline-primary btn-sm" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+                      Access Data
+                    </a>
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+        </div>
+        <div id="no-results" class="text-center hidden mt-8">
+          <p class="text-lg">{{ T "no_posts_found" | default "No data sources found for this category." }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* JavaScript for filtering */}}
+  <script>
+    (function() {
+      const categoryButtons = document.querySelectorAll('#data-sources-list .category-filter-btn');
+      const showAllBtn = document.getElementById('show-all-btn');
+      const dataSourceItems = document.querySelectorAll('.data-source-item');
+      const noResults = document.getElementById('no-results');
+      let selectedCategories = new Set();
+
+      function filterByCategories() {
+        let visibleCount = 0;
+
+        if (selectedCategories.size === 0) {
+          dataSourceItems.forEach(item => {
+            item.style.display = '';
+            visibleCount++;
+          });
+          categoryButtons.forEach(btn => {
+            if (btn.id !== 'show-all-btn') {
+              btn.classList.remove('bg-primary', 'text-white');
+              btn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+            }
+          });
+          showAllBtn.classList.add('bg-primary', 'text-white');
+          showAllBtn.classList.remove('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+        } else {
+          dataSourceItems.forEach(item => {
+            const categoriesStr = item.getAttribute('data-categories') || '';
+            const categories = categoriesStr.trim().split(/\s+/).filter(c => c.length > 0);
+            const hasSelectedCategory = Array.from(selectedCategories).some(selected => 
+              categories.includes(selected.toLowerCase())
+            );
+
+            if (hasSelectedCategory) {
+              item.style.display = '';
+              visibleCount++;
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          categoryButtons.forEach(btn => {
+            if (btn.id === 'show-all-btn') return;
+            const category = btn.getAttribute('data-category');
+            if (selectedCategories.has(category)) {
+              btn.classList.add('bg-primary', 'text-white');
+              btn.classList.remove('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+            } else {
+              btn.classList.remove('bg-primary', 'text-white');
+              btn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+            }
+          });
+          showAllBtn.classList.remove('bg-primary', 'text-white');
+          showAllBtn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+        }
+
+        if (visibleCount === 0) {
+          noResults.classList.remove('hidden');
+        } else {
+          noResults.classList.add('hidden');
+        }
+      }
+
+      categoryButtons.forEach(btn => {
+        if (btn.id === 'show-all-btn') return;
+        btn.addEventListener('click', function(e) {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 150);
+          const category = this.getAttribute('data-category');
+          if (selectedCategories.has(category)) {
+            selectedCategories.delete(category);
+          } else {
+            selectedCategories.add(category);
+          }
+          filterByCategories();
+        });
+      });
+
+      if (showAllBtn) {
+        showAllBtn.addEventListener('click', function(e) {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 150);
+          selectedCategories.clear();
+          filterByCategories();
+        });
+      }
+
+      filterByCategories();
+    })();
+  </script>
+{{ end }}
+
+

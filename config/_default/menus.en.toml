@@ -7,9 +7,32 @@ url = "/"
 weight = 1
 
 [[main]]
-name = "About"
-url = "/about"
 weight = 2
+name = "About Us"
+
+[[main]]
+parent = "About Us"
+name = "About the PI"
+url = "/about"
+weight = 1
+
+[[main]]
+parent = "About Us"
+name = "About the Web Developer"
+url = "/about/developer1"
+weight = 2
+
+[[main]]
+parent = "About Us"
+name = "About someone"
+url = "/about/developer2"
+weight = 3
+
+[[main]]
+parent = "About Us"
+name = "Members"
+url = "/authors"
+weight = 4
 
 [[main]]
 name = "Elements"
@@ -32,23 +55,28 @@ url = "/contact"
 
 [[main]]
 parent = "Pages"
-name = "Members"
-url = "/authors"
-
-[[main]]
-parent = "Pages"
-name = "Categories"
-url = "/categories"
+name = "Our Publications"
+url = "/publications"
 
 [[main]]
 parent = "Pages"
 name = "404 Page"
 url = "/404"
 
+[[main]]
+name = "Projects"
+url = "/categories"
+weight = 5
+
+[[main]]
+name = "Data Sources"
+url = "/data-sources"
+weight = 6
+
 
 # footer menu
 [[footer]]
-name = "About"
+name = "About Us"
 url = "/about"
 weight = 1
 

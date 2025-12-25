@@ -1,15 +1,17 @@
 ---
-title: "About the PI"
-meta_title: "About the PI"
+title: "About the Web Developer"
+meta_title: "About the Developer 1"
 
-description: "Forest ecologist focusing on tree size inequality, structural diversity, and forest stability across large forest dynamics plots."
-#image: "/images/avatar.png"
+description: "Developer 1 description"
+image: "/images/avatar.png"
 layout: "about"
 draft: false
 ---
-I am **Han Xu**, a forest ecologist 
 
-# Research focus
+I am **Yuyue Deng**, a forest ecologist focusing on **tree size inequality, structural diversity, and forest temporal stability** using large forest dynamics plot data.
+
+<details>
+<summary><strong>Research focus</strong></summary>
 
 - Tree size inequality (Gini, Lorenz asymmetry) and forest dynamics
 - Structural diversity as a driver of productivity and temporal stability
@@ -41,5 +43,8 @@ I am **Han Xu**, a forest ecologist
 <summary><strong>Collaboration</strong></summary>
 
 I welcome collaborations on multi-census forest synthesis, forest stability mechanisms, and structure–function relationships, particularly projects requiring harmonized pipelines and cross-site comparability.
+
+</details>
+
 
 </details>
