@@ -15,5 +15,9 @@ social:
   - name: linkedin
     icon: fa-brands fa-linkedin
     link: https://linkedin.com
+
+  - name: researchgate
+    icon: fa-brands fa-researchgate
+    link: https://www.researchgate.net/profile/Yuyue-Deng
 ---
 **Yuyue Deng** is a PhD researcher in forest ecology, working on biodiversity–stability theory, forest structural diversity, and ecosystem functioning using large forest dynamics plot data across biogeographic gradients.
