@@ -1,0 +1,178 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  <section class="section pt-0">
+    <div class="container">
+      {{/* Show categories as filter */}}
+      {{ if eq .Data.Singular "category" }}
+        <div class="mb-8 -mt-4">
+          <div class="bg-light dark:bg-darkmode-light rounded p-6 text-center">
+            <ul id="categories-list">
+              <li class="inline-block m-2">
+                <button
+                  id="show-all-btn"
+                  class="category-filter-btn text-text-dark dark:text-darkmode-text-dark hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded bg-white px-3 py-1 hover:text-white cursor-pointer transition-all duration-200 active:scale-95">
+                  {{ T "show_all" | default "Show All" }}
+                </button>
+              </li>
+              {{ range .Data.Terms.ByCount }}
+                <li class="inline-block m-2">
+                  <button
+                    data-category="{{ .Page.Title | lower }}"
+                    class="category-filter-btn text-text-dark dark:text-darkmode-text-dark hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark m-1 block rounded bg-white px-3 py-1 hover:text-white cursor-pointer transition-all duration-200 active:scale-95">
+                    {{ .Page.Title }}
+                    <span class="ml-1">({{ .Count }})</span>
+                  </button>
+                </li>
+              {{ end }}
+            </ul>
+          </div>
+        </div>
+
+        {{/* Show all posts with filter functionality */}}
+        {{ $allPosts := where site.RegularPages "Params.categories" "!=" nil }}
+
+        <div class="mt-8">
+          <div class="row" id="posts-container">
+            {{ range $allPosts }}
+              <div
+                class="md:col-6 mb-14 post-item"
+                data-categories="{{ if .Params.categories }}{{ range .Params.categories }}{{ . | lower }} {{ end }}{{ end }}">
+                {{ partial "components/blog-card" . }}
+              </div>
+            {{ end }}
+          </div>
+          <div id="no-results" class="text-center hidden mt-8">
+            <p class="text-lg">{{ T "no_posts_found" | default "No posts found for this category." }}</p>
+          </div>
+        </div>
+      {{ else }}
+        {{/* Default behavior for other taxonomies (tags) */}}
+        <ul class="text-center">
+          {{ range .Data.Terms.ByCount }}
+            <li class="m-3 inline-block">
+              <a
+                href="{{ .Page.Permalink }}"
+                class="bg-light text-text-dark dark:bg-darkmode-light dark:text-darkmode-text-dark block rounded px-4 py-2 text-xl">
+                {{ .Page.Title }}
+                <span class="bg-body dark:bg-darkmode-body ml-2 rounded px-2">
+                  {{ .Count }}
+                </span>
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* JavaScript for category filtering with multi-select */}}
+  {{ if eq .Data.Singular "category" }}
+    <script>
+      (function() {
+        const categoryButtons = document.querySelectorAll('.category-filter-btn');
+        const showAllBtn = document.getElementById('show-all-btn');
+        const postItems = document.querySelectorAll('.post-item');
+        const noResults = document.getElementById('no-results');
+        let selectedCategories = new Set();
+
+        function filterByCategories() {
+          let visibleCount = 0;
+
+          // If no categories selected, show all
+          if (selectedCategories.size === 0) {
+            postItems.forEach(item => {
+              item.style.display = '';
+              visibleCount++;
+            });
+            // Reset all buttons
+            categoryButtons.forEach(btn => {
+              btn.classList.remove('bg-primary', 'text-white');
+              btn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+            });
+            showAllBtn.classList.add('bg-primary', 'text-white');
+            showAllBtn.classList.remove('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+          } else {
+            // Filter by selected categories
+            postItems.forEach(item => {
+              const categoriesStr = item.getAttribute('data-categories') || '';
+              const categories = categoriesStr.trim().split(/\s+/).filter(c => c.length > 0);
+              
+              // Check if item has any of the selected categories
+              const hasSelectedCategory = Array.from(selectedCategories).some(selected => 
+                categories.includes(selected.toLowerCase())
+              );
+
+              if (hasSelectedCategory) {
+                item.style.display = '';
+                visibleCount++;
+              } else {
+                item.style.display = 'none';
+              }
+            });
+
+            // Update button states
+            categoryButtons.forEach(btn => {
+              const category = btn.getAttribute('data-category');
+              if (selectedCategories.has(category)) {
+                btn.classList.add('bg-primary', 'text-white');
+                btn.classList.remove('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+              } else {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+              }
+            });
+            showAllBtn.classList.remove('bg-primary', 'text-white');
+            showAllBtn.classList.add('bg-white', 'text-text-dark', 'dark:text-darkmode-text-dark');
+          }
+
+          // Show/hide no results message
+          if (visibleCount === 0) {
+            noResults.classList.remove('hidden');
+          } else {
+            noResults.classList.add('hidden');
+          }
+        }
+
+        // Add click handlers to category buttons (toggle selection)
+        categoryButtons.forEach(btn => {
+          // Skip the "Show All" button
+          if (btn.id === 'show-all-btn') return;
+          
+          btn.addEventListener('click', function(e) {
+            // Add click animation
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+            
+            const category = this.getAttribute('data-category');
+            if (selectedCategories.has(category)) {
+              selectedCategories.delete(category);
+            } else {
+              selectedCategories.add(category);
+            }
+            filterByCategories();
+          });
+        });
+
+        // Add click handler to show all button
+        if (showAllBtn) {
+          showAllBtn.addEventListener('click', function(e) {
+            // Add click animation
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+            
+            selectedCategories.clear();
+            filterByCategories();
+          });
+        }
+
+        // Initialize: show all posts
+        filterByCategories();
+      })();
+    </script>
+  {{ end }}
+{{ end }}

@@ -1,1 +1,26 @@
 /* Add your own custom styles here */
+
+/* Fixed height for author cards */
+.authors-list .row > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.author-card-fixed {
+  height: 100% !important;
+  min-height: 300px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.author-card-fixed .author-description {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  min-height: 80px;
+}

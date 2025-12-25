@@ -6,7 +6,7 @@ description: this is meta description
 social:
   - name: github
     icon: fa-brands fa-github
-    link: https://github.com
+    link: https://github.com/dengyuyueyuyue
 
   - name: twitter
     icon: fa-brands fa-twitter
@@ -20,4 +20,4 @@ social:
     icon: fa-brands fa-researchgate
     link: https://www.researchgate.net/profile/Yuyue-Deng
 ---
-**Yuyue Deng** is a PhD researcher in forest ecology, working on biodiversity–stability theory, forest structural diversity, and ecosystem functioning using large forest dynamics plot data across biogeographic gradients.
+**Yuyue Deng** is a PhD candidate in forest ecology, working on biodiversity–stability theory, forest structural diversity, and ecosystem functioning using large forest dynamics plot data across biogeographic gradients.
