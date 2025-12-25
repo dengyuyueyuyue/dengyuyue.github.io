@@ -1,7 +1,7 @@
 ---
 title: Yuyue Deng
 email: dengyuyue96@gmail.com
-image: "images/avatar.png"
+# image: "images/avatar.png"  # 注释掉以使用 Gravatar 头像
 description: this is meta description
 social:
   - name: github
@@ -16,4 +16,4 @@ social:
     icon: fa-brands fa-linkedin
     link: https://linkedin.com
 ---
-lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostr navigation et dolore magna aliqua.
+**Yuyue Deng** is a PhD researcher in forest ecology, working on biodiversity–stability theory, forest structural diversity, and ecosystem functioning using large forest dynamics plot data across biogeographic gradients.
