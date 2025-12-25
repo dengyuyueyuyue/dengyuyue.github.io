@@ -31,41 +31,41 @@
 #     image: "/images/publications/example.jpg"  # Optional: publication image
 
 publications:
-  - title: "Example Publication Title"
-    authors:
-      - "Author asd1"
-      - "Author 2"
-      - "Author 3"
-    journal: "Nature"
-    year: 2024
-    volume: "612"
-    pages: "123-145"
-    doi: "10.1038/example"
-    url: "https://doi.org/10.1038/example"
-    abstract: "This is an example abstract for the publication. You can add the full abstract text here, and it will be displayed on the publications page."
-    categories:
-      - "Forest Ecology"
-      - "Biodiversity"
-    tags:
-      - "forest dynamics"
-      - "biodiversity"
-  
-  - title: "Another Publication"
-    authors:
-      - "Author222 A"
-      - "Author B"
-    journal: "Science"
-    year: 2023
-    volume: "380"
-    pages: "456-470"
-    doi: "10.1126/example"
-    url: "https://doi.org/10.1126/example"
-    abstract: "Another example publication abstract. This demonstrates how multiple publications can be listed."
-    categories:
-      - "Climate Science"
-    tags:
-      - "climate"
-      - "modeling"
+  # - title: "Example Publication Title"
+  #   authors:
+  #     - "Author asd1"
+  #     - "Author 2"
+  #     - "Author 3"
+  #   journal: "Nature"
+  #   year: 2024
+  #   volume: "612"
+  #   pages: "123-145"
+  #   doi: "10.1038/example"
+  #   url: "https://doi.org/10.1038/example"
+  #   abstract: "This is an example abstract for the publication. You can add the full abstract text here, and it will be displayed on the publications page."
+  #   categories:
+  #     - "Forest Ecology"
+  #     - "Biodiversity"
+  #   tags:
+  #     - "forest dynamics"
+  #     - "biodiversity"
+  # 
+  # - title: "Another Publication"
+  #   authors:
+  #     - "Author222 A"
+  #     - "Author B"
+  #   journal: "Science"
+  #   year: 2023
+  #   volume: "380"
+  #   pages: "456-470"
+  #   doi: "10.1126/example"
+  #   url: "https://doi.org/10.1126/example"
+  #   abstract: "Another example publication abstract. This demonstrates how multiple publications can be listed."
+  #   categories:
+  #     - "Climate Science"
+  #   tags:
+  #     - "climate"
+  #     - "modeling"
   
   - title: "Assessing carbon stock change for effective Nature-based Solutions implementation allocation: A framework"
     authors:
