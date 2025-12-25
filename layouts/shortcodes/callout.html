@@ -1,0 +1,40 @@
+{{- $type := .Get "type" | default "info" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $icon := .Get "icon" | default "" -}}
+
+{{- $typeMap := dict 
+  "info" (dict "icon" "fa-info-circle" "class" "callout-info")
+  "tip" (dict "icon" "fa-lightbulb" "class" "callout-tip")
+  "warning" (dict "icon" "fa-exclamation-triangle" "class" "callout-warning")
+  "note" (dict "icon" "fa-sticky-note" "class" "callout-note")
+  "quote" (dict "icon" "fa-quote-left" "class" "callout-quote")
+  "success" (dict "icon" "fa-check-circle" "class" "callout-success")
+  "danger" (dict "icon" "fa-times-circle" "class" "callout-danger")
+-}}
+
+{{- $config := index $typeMap $type -}}
+{{- if not $config -}}
+  {{- $config = index $typeMap "info" -}}
+{{- end -}}
+
+{{- $finalIcon := $icon -}}
+{{- if eq $finalIcon "" -}}
+  {{- $finalIcon = $config.icon -}}
+{{- end -}}
+
+<div class="callout {{ $config.class }}">
+  <div class="callout-header">
+    {{- if $finalIcon -}}
+      <i class="fa {{ $finalIcon }} callout-icon"></i>
+    {{- end -}}
+    {{- if $title -}}
+      <strong class="callout-title">{{ $title }}</strong>
+    {{- else if $type -}}
+      <strong class="callout-title">{{ $type | title }}</strong>
+    {{- end -}}
+  </div>
+  <div class="callout-content">
+    {{ .Inner | markdownify }}
+  </div>
+</div>
+

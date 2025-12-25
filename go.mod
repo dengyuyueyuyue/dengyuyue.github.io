@@ -23,9 +23,8 @@ require (
 	github.com/gethugothemes/hugo-modules/seo-tools/site-verifications v0.0.0-20251201044043-2bed50ee369b // indirect
 	github.com/gethugothemes/hugo-modules/shortcodes/button v0.0.0-20251201044043-2bed50ee369b // indirect
 	github.com/gethugothemes/hugo-modules/shortcodes/mermaid v0.0.0-20251201044043-2bed50ee369b // indirect
-	github.com/gethugothemes/hugo-modules/shortcodes/notice v0.0.0-20251201044043-2bed50ee369b // indirect
+	github.com/gethugothemes/hugo-modules/shortcodes/notice v0.0.0-20251204045621-e6dcb6d7954f // indirect
 	github.com/gethugothemes/hugo-modules/tab v0.0.0-20251201044043-2bed50ee369b // indirect
 	github.com/gethugothemes/hugo-modules/table-of-contents v0.0.0-20251201044043-2bed50ee369b // indirect
 	github.com/gethugothemes/hugo-modules/videos v0.0.0-20251201044043-2bed50ee369b // indirect
-	github.com/zeon-studio/hugoplate v0.0.0-20251201044416-6644f1011dc0 // indirect
 )

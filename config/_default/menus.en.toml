@@ -40,33 +40,33 @@ url = "/elements"
 weight = 3
 
 [[main]]
+name = "Projects"
+url = "/categories"
 weight = 4
-name = "Pages"
 
 [[main]]
-parent = "Pages"
+weight = 5
+name = "Publications"
+
+[[main]]
+parent = "Publications"
 name = "Blog"
 url = "/blog"
 
 [[main]]
-parent = "Pages"
+parent = "Publications"
 name = "Contact"
 url = "/contact"
 
 [[main]]
-parent = "Pages"
+parent = "Publications"
 name = "Our Publications"
 url = "/publications"
 
 [[main]]
-parent = "Pages"
+parent = "Publications"
 name = "404 Page"
 url = "/404"
-
-[[main]]
-name = "Projects"
-url = "/categories"
-weight = 5
 
 [[main]]
 name = "Data Sources"

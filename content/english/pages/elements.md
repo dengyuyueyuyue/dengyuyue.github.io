@@ -110,6 +110,34 @@ This is a simple warning.
 
 <hr>
 
+### Callout
+
+{{< callout type="info" title="Quick take" >}}
+This is a callout with a custom title. You can use it to highlight important information.
+{{< /callout >}}
+
+{{< callout type="tip" title="Hypothesis" >}}
+This is a tip callout. Perfect for sharing insights or hypotheses.
+{{< /callout >}}
+
+{{< callout type="warning" >}}
+This is a warning callout without a custom title. The type name will be used as the title.
+{{< /callout >}}
+
+{{< callout type="note" title="Why FDP plots matter" >}}
+Long-term FDP censuses are one of the few data infrastructures that can directly test these questions with the necessary temporal depth and demographic detail.
+{{< /callout >}}
+
+{{< callout type="success" title="Success" >}}
+This is a success callout for positive outcomes or achievements.
+{{< /callout >}}
+
+{{< callout type="danger" title="Important" >}}
+This is a danger callout for critical warnings or errors.
+{{< /callout >}}
+
+<hr>
+
 ### Tab
 
 {{< tabs >}}
