@@ -5,6 +5,15 @@
     <div class="container">
       <div class="row">
         {{ $pubs := .Site.Data.publications.publications | default slice }}
+        {{ if eq (len $pubs) 0 }}
+          <div class="col-12">
+            <p class="text-center text-muted">No publications found. Please check data/publications.yaml</p>
+          </div>
+        {{ else }}
+          <div class="col-12 mb-4">
+            <p class="text-sm text-muted">Total publications: {{ len $pubs }}</p>
+          </div>
+        {{ end }}
         {{ range $pubs }}
           <div class="md:col-6 lg:col-4 mb-8">
             <div class="bg-body dark:bg-darkmode-body rounded p-6 h-full">
