@@ -1,10 +1,11 @@
 {{- $height := .Get "height" | default "900px" -}}
 {{- $width := .Get "width" | default "100%" -}}
 {{- $class := .Get "class" | default "" -}}
+{{- $src := "/stab_show.html" | relURL -}}
 
 <div class="stab-show-container {{ $class }}" style="margin: 2rem 0; width: {{ $width }};">
   <iframe 
-    src="/stab_show.html" 
+    src="{{ $src }}" 
     style="width: 100%; height: {{ $height }}; border: none; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: block;"
     title="Temporal stability concept visualization"
     loading="lazy"

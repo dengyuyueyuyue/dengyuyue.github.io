@@ -41,8 +41,50 @@
               </li>
             </ul>
             <div class="content mb-10">
-              {{ .Content }}
+{{ .Content }}
             </div>
+            <script>
+              // Fix absolute paths for GitHub Pages subdirectory deployment
+              (function() {
+                // Get base path from current location or Hugo baseURL
+                const baseURL = '{{ site.BaseURL }}';
+                let basePath = '';
+                
+                if (baseURL && baseURL !== '/') {
+                  // Extract path from baseURL (e.g., "https://example.com/path/" -> "/path")
+                  const urlMatch = baseURL.match(/https?:\/\/[^\/]+(\/.*)/);
+                  if (urlMatch) {
+                    basePath = urlMatch[1].replace(/\/$/, '');
+                  } else if (baseURL.startsWith('/')) {
+                    basePath = baseURL.replace(/\/$/, '');
+                  }
+                }
+                
+                // Fallback: detect from current path if basePath is empty
+                if (!basePath) {
+                  const pathParts = window.location.pathname.split('/');
+                  if (pathParts.length > 2 && pathParts[1]) {
+                    basePath = '/' + pathParts[1];
+                  }
+                }
+                
+                // Fix image src attributes
+                document.querySelectorAll('.content img[src^="/"]').forEach(function(img) {
+                  const originalSrc = img.getAttribute('src');
+                  if (originalSrc && originalSrc.startsWith('/') && !originalSrc.startsWith(basePath)) {
+                    img.setAttribute('src', basePath + originalSrc);
+                  }
+                });
+                
+                // Fix iframe src attributes
+                document.querySelectorAll('.content iframe[src^="/"], .stab-show-container iframe[src^="/"]').forEach(function(iframe) {
+                  const originalSrc = iframe.getAttribute('src');
+                  if (originalSrc && originalSrc.startsWith('/') && !originalSrc.startsWith(basePath)) {
+                    iframe.setAttribute('src', basePath + originalSrc);
+                  }
+                });
+              })();
+            </script>
             <div class="row items-start justify-between">
               {{ $tags:= .Params.tags }}
               {{ if $tags }}

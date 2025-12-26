@@ -1,0 +1,19 @@
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $class := .Get "class" | default "" -}}
+{{- $style := .Get "style" | default "" -}}
+{{- $width := .Get "width" | default "" -}}
+{{- $height := .Get "height" | default "" -}}
+
+{{- /* Use relURL to handle baseURL correctly */ -}}
+{{- $imageSrc := $src | relURL -}}
+
+<img 
+  src="{{ $imageSrc }}" 
+  alt="{{ $alt }}"
+  {{- if $class }} class="{{ $class }}"{{ end -}}
+  {{- if $style }} style="{{ $style }}"{{ end -}}
+  {{- if $width }} width="{{ $width }}"{{ end -}}
+  {{- if $height }} height="{{ $height }}"{{ end -}}
+  loading="lazy" />
+
