@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BEF Stability Concept Toy: Animated + 3 Panels</title>
+
+  <!-- Plotly -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+  <style>
+    :root{
+      /* Notion-like (Light) */
+      --page:#ffffff;
+      --bg:#fbfbfa;
+      --card: rgba(255,255,255,.92);
+      --text:#191919;
+      --muted:#6b6f76;
+      --border:rgba(15,15,15,.10);
+
+      /* accent */
+      --accent:#2f6feb;
+      --accent2:#16a34a;
+
+      /* subtle shadow */
+      --shadow: 0 10px 28px rgba(15,15,15,.08);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
+      background: var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{ max-width:1180px; margin:14px auto; padding:0 12px 16px; }
+
+    .topbar{
+      display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; justify-content:space-between;
+      padding:12px 12px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .title{ min-width:260px; }
+    h1{ margin:0; font-size:16px; font-weight:800; letter-spacing:.2px; }
+    .sub{ margin:6px 0 0; font-size:12px; color:var(--muted); line-height:1.4; max-width:760px; }
+
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+    .ctrl{ display:flex; flex-direction:column; gap:6px; }
+
+    .label{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+
+    .pill{
+      font-size:12px; padding:2px 8px; border-radius:999px;
+      background: rgba(47,111,235,.10);
+      border:1px solid rgba(47,111,235,.25);
+      color:var(--text);
+    }
+
+    input[type="range"]{
+      width:220px;
+      accent-color: var(--accent);
+    }
+
+    input[type="number"]{
+      width:110px; padding:6px 8px; border-radius:10px;
+      background: rgba(15,15,15,.04);
+      border:1px solid var(--border);
+      color:var(--text);
+    }
+
+    .btn{
+      cursor:pointer; user-select:none;
+      padding:8px 10px; border-radius:12px;
+      background: rgba(47,111,235,.10);
+      border:1px solid rgba(47,111,235,.25);
+      color:var(--text); font-weight:750; font-size:13px;
+    }
+    .btn.secondary{
+      background: rgba(15,15,15,.03);
+      border-color: var(--border);
+      font-weight:650;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn[disabled]{ opacity:.55; cursor:not-allowed; }
+
+    /* Layout */
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap:12px;
+      align-items:stretch;
+    }
+
+    .card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .cardHead{
+      padding:10px 12px 0;
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    }
+    .cardTitle{ margin:0; font-size:12px; font-weight:800; }
+    .cardHint{ margin:0; font-size:12px; color:var(--muted); }
+
+    /* Left: canvas */
+    .canvasWrap{ padding:10px 12px 12px; }
+    canvas{
+      width:100%;
+      height:330px;
+      border-radius:12px;
+      display:block;
+      background: linear-gradient(to bottom, rgba(15,15,15,.03) 0%, rgba(15,15,15,.02) 100%);
+      border:1px solid var(--border);
+    }
+
+    .miniKpis{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:8px;
+    }
+    .kpi{
+      background: rgba(15,15,15,.02);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:12px;
+    }
+    .kpi .k{ color:var(--muted); font-size:11px; }
+    .kpi .v{ font-weight:850; font-size:13px; margin-top:4px; }
+    .bar{
+      height:6px; background: rgba(15,15,15,.06);
+      border-radius:999px; overflow:hidden; margin-top:8px;
+    }
+    .fill{
+      height:100%;
+      width:50%;
+      background: linear-gradient(90deg, rgba(47,111,235,.95), rgba(22,163,74,.85));
+    }
+
+    /* Right: panels */
+    .panels{
+      padding:10px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .plotCard{
+      background: rgba(15,15,15,.015);
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+    }
+    .plotHead{
+      padding:8px 10px 0;
+      display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+    }
+    .plotTitle{ margin:0; font-size:12px; font-weight:800; }
+    .plotSub{ margin:0; font-size:11px; color:var(--muted); }
+    .plot{ height:155px; }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      canvas{ height:300px; }
+      .plot{ height:160px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Temporal stability concept (toy)</h1>
+        <div class="sub">
+          This is a playful concept demo (not a calibrated ecological model). Direction rules:
+          <b>SR</b> increases <b>Asynchrony</b> and <b>Population stability</b>, thereby increasing <b>Temporal stability</b>.
+          <b>Structural diversity</b> (SD; here as size variation) decreases both Asynchrony and Population stability with ~<b>1.5×</b> stronger effects, thus lowering Temporal stability.
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="ctrl">
+          <div class="label">Species richness (SR) <span class="pill" id="srPill">6</span></div>
+          <input id="sr" type="range" min="1" max="24" value="6" step="1"/>
+        </div>
+
+        <div class="ctrl">
+          <div class="label">Structural diversity (SD) <span class="pill" id="sdPill">0.30</span></div>
+          <input id="sd" type="range" min="0" max="1" value="0.30" step="0.01"/>
+        </div>
+
+        <div class="ctrl">
+          <div class="label">T (length)</div>
+          <input id="T" type="number" min="120" max="2000" value="360"/>
+        </div>
+
+        <div class="ctrl">
+          <div class="label">W (window)</div>
+          <input id="W" type="number" min="10" max="200" value="36"/>
+        </div>
+
+        <div class="ctrl">
+          <div class="label">Seed</div>
+          <input id="seed" type="number" min="1" max="999999" value="2025"/>
+        </div>
+
+        <button id="regen" class="btn">Re-generate</button>
+        <button id="play" class="btn secondary">Auto SR</button>
+        <button id="stop" class="btn secondary" disabled>Stop</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left -->
+      <div class="card">
+        <div class="cardHead">
+          <p class="cardTitle">Animated forest (concept)</p>
+          <p class="cardHint">Color = species; crown size variation = SD proxy; top wave = total biomass fluctuation (concept)</p>
+        </div>
+        <div class="canvasWrap">
+          <canvas id="scene"></canvas>
+
+          <div class="miniKpis">
+            <div class="kpi">
+              <div class="k">Temporal stability</div>
+              <div class="v" id="kStab">—</div>
+              <div class="bar"><div class="fill" id="bStab"></div></div>
+            </div>
+            <div class="kpi">
+              <div class="k">Asynchrony (1−φN)</div>
+              <div class="v" id="kAsy">—</div>
+              <div class="bar"><div class="fill" id="bAsy"></div></div>
+            </div>
+            <div class="kpi">
+              <div class="k">Population stability (mean μ/σ)</div>
+              <div class="v" id="kPop">—</div>
+              <div class="bar"><div class="fill" id="bPop"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="card">
+        <div class="cardHead">
+          <p class="cardTitle">Three panels</p>
+          <p class="cardHint">Fixed y-axes for easier visual comparison</p>
+        </div>
+
+        <div class="panels">
+          <div class="plotCard">
+            <div class="plotHead">
+              <p class="plotTitle">Panel 1 — Temporal stability</p>
+              <p class="plotSub">rolling μ/σ(total)</p>
+            </div>
+            <div id="p1" class="plot"></div>
+          </div>
+
+          <div class="plotCard">
+            <div class="plotHead">
+              <p class="plotTitle">Panel 2 — Asynchrony</p>
+              <p class="plotSub">1 − φN</p>
+            </div>
+            <div id="p2" class="plot"></div>
+          </div>
+
+          <div class="plotCard">
+            <div class="plotHead">
+              <p class="plotTitle">Panel 3 — Population stability</p>
+              <p class="plotSub">mean rolling μ/σ(species)</p>
+            </div>
+            <div id="p3" class="plot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* -----------------------------
+   Deterministic RNG
+------------------------------*/
+function mulberry32(seed){
+  let t = seed >>> 0;
+  return function(){
+    t += 0x6D2B79F5;
+    let x = Math.imul(t ^ (t >>> 15), 1 | t);
+    x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  }
+}
+function randn(rng){
+  let u=0,v=0;
+  while(u===0) u=rng();
+  while(v===0) v=rng();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+
+/* -----------------------------
+   Rolling helpers
+------------------------------*/
+function rollingMean(arr, W){
+  const out = new Array(arr.length).fill(null);
+  let s=0;
+  for(let i=0;i<arr.length;i++){
+    s += arr[i];
+    if(i>=W) s -= arr[i-W];
+    if(i>=W-1) out[i]=s/W;
+  }
+  return out;
+}
+function rollingVar(arr, W){
+  const out = new Array(arr.length).fill(null);
+  let s=0, s2=0;
+  for(let i=0;i<arr.length;i++){
+    s += arr[i]; s2 += arr[i]*arr[i];
+    if(i>=W){ s -= arr[i-W]; s2 -= arr[i-W]*arr[i-W]; }
+    if(i>=W-1){
+      const m=s/W;
+      out[i]=Math.max((s2/W)-(m*m), 0);
+    }
+  }
+  return out;
+}
+function rollingMuOverSigma(arr, W){
+  const mu=rollingMean(arr,W);
+  const v=rollingVar(arr,W);
+  const out = new Array(arr.length).fill(null);
+  for(let i=0;i<arr.length;i++){
+    if(mu[i]===null) continue;
+    out[i]= mu[i] / Math.sqrt(v[i]+1e-12);
+  }
+  return out;
+}
+
+/* -----------------------------
+   Concept simulator (your final direction rules)
+   Targets (direction only; not calibrated):
+   - SR ↑  -> Asynchrony ↑  (stronger)
+   - SR ↑  -> Pop stability ↑ (weaker, but positive)
+   - SD ↑  -> Asynchrony ↓  (~1.5× strength)
+   - SD ↑  -> Pop stability ↓ (~1.5× strength)
+   => Temporal stability (rolling μ/σ of total) should increase with SR and decrease with SD (generally).
+------------------------------*/
+function simulate({SR,SD,T,W,seed}){
+  const rng = mulberry32(seed);
+
+  // Normalize SR to [0,1] on the slider range
+  const srN = Math.log(1 + SR) / Math.log(1 + 24);
+  const sdN = clamp(SD, 0, 1);
+
+  // Shared climate driver (AR1)
+  const env = new Array(T).fill(0);
+  let e=0;
+  for(let t=0;t<T;t++){
+    e = 0.86*e + 0.85*randn(rng);
+    env[t]=e;
+  }
+
+  /* ---------------------------
+     Mechanism A: Asynchrony channel
+     - SR increases "response diversity" (sens spread) -> lower covariance -> higher asynchrony
+     - SD adds a shared shock (synchronizing) -> lower asynchrony (1.5× strength)
+  ----------------------------*/
+  const responseSpread = 0.10 + 0.22*srN;            // SR ↑ => more differentiated responses
+  const sharedShockAmp = 0.00 + 0.28*(1.5*sdN);      // SD ↑ => stronger synchronizing shock
+
+  const shock = new Array(T).fill(0);
+  let z=0;
+  for(let t=0;t<T;t++){
+    z = 0.82*z + sharedShockAmp*randn(rng);
+    shock[t]=z;
+  }
+
+  /* ---------------------------
+     Mechanism B: Population stability channel
+     - SR reduces idiosyncratic noise slightly (positive effect)
+     - SD increases idiosyncratic noise (negative; ~1.5× stronger)
+  ----------------------------*/
+  const srNoiseRelief = 1 - 0.28*srN;                // up to ~28% reduction
+  const sdNoisePenalty = 1 + 0.52*(1.5*sdN);         // up to ~+78% increase
+  const noiseScale = clamp(srNoiseRelief * sdNoisePenalty, 0.55, 2.20);
+
+  // Keep competition weak and not SR-driven (so SR doesn't "accidentally" reduce stability)
+  const compPenalty = 0.015;
+
+  // Density dependence strong enough to avoid explosions
+  const noiseBase = 0.22 * noiseScale;
+
+  const N = [];
+  for(let i=0;i<SR;i++){
+    // Species-specific climate sensitivity
+    const sens = (randn(rng)*responseSpread) + (i-(SR-1)/2)*(responseSpread/(SR+3));
+
+    // Base parameters (kept stable)
+    const r = 0.06 + 0.03*rng();
+    const k = 80 + 30*rng();
+    const omega = 0.22 + 0.10*rng();
+
+    let n = k*(0.80+0.15*rng());
+    const series = new Array(T).fill(0);
+
+    for(let t=0;t<T;t++){
+      const envEffect = sens*env[t];
+      const shared = shock[t];  // synchronizing component (SD channel)
+      const eps = noiseBase*randn(rng)/Math.sqrt(Math.max(n,1));
+
+      // Simple stabilizing stochastic dynamics
+      const growth = r - compPenalty + envEffect + shared - omega*(n/k - 1);
+      n = n*Math.exp(growth + eps);
+      n = clamp(n, 1e-3, 6*k);
+      series[t]=n;
+    }
+    N.push(series);
+  }
+
+  // Total
+  const NT = new Array(T).fill(0);
+  for(let t=0;t<T;t++){
+    let s=0;
+    for(let i=0;i<SR;i++) s += N[i][t];
+    NT[t]=s;
+  }
+
+  // Temporal stability (rolling μ/σ of total)
+  const stab_total = rollingMuOverSigma(NT, W);
+
+  // Asynchrony: 1 - phiN (Loreau & de Mazancourt style)
+  const var_sum = rollingVar(NT, W);
+  const var_sp  = N.map(a => rollingVar(a, W));
+
+  const asy = new Array(T).fill(null);
+  for(let t=0;t<T;t++){
+    if(t < W-1) continue;
+
+    let sumSD = 0;
+    for(let i=0;i<SR;i++){
+      const v = var_sp[i][t];
+      sumSD += Math.sqrt((v ?? 0) + 1e-12);
+    }
+    const phiN = (var_sum[t] ?? 0) / ((sumSD*sumSD) + 1e-12);
+    asy[t] = clamp(1 - clamp(phiN, 0, 1.02), 0, 1);
+  }
+
+  // Population stability: mean rolling μ/σ per species
+  const perSpStab = N.map(a=>rollingMuOverSigma(a,W));
+  const pop_stab = new Array(T).fill(null);
+  for(let t=0;t<T;t++){
+    if(t < W-1) continue;
+    let s=0;
+    for(let i=0;i<SR;i++) s += (perSpStab[i][t] ?? 0);
+    pop_stab[t] = s/SR;
+  }
+
+  const time = Array.from({length:T}, (_,i)=>i+1);
+  const lastIdx = T-1;
+  const latest = {
+    stab: stab_total[lastIdx] ?? null,
+    asy: asy[lastIdx] ?? null,
+    pop: pop_stab[lastIdx] ?? null
+  };
+
+  return { time, SR, SD, T, W, seed, N, NT, stab_total, asy, pop_stab, latest };
+}
+
+/* -----------------------------
+   Plotly compact panels (Notion-like)
+------------------------------*/
+const config = {displayModeBar:false, responsive:true};
+
+function baseLayout(yTitle, yRange=null){
+  return {
+    margin:{l:48,r:14,t:18,b:34},
+    paper_bgcolor:'rgba(0,0,0,0)',
+    plot_bgcolor:'rgba(15,15,15,0.015)',
+    font:{color:'#191919', size:11},
+    xaxis:{
+      title:'Time',
+      gridcolor:'rgba(15,15,15,0.06)',
+      zerolinecolor:'rgba(15,15,15,0.06)'
+    },
+    yaxis:{
+      title:yTitle,
+      gridcolor:'rgba(15,15,15,0.06)',
+      zerolinecolor:'rgba(15,15,15,0.06)',
+      autorange: yRange ? false : true,
+      range: yRange || undefined
+    },
+    showlegend:false
+  };
+}
+
+function initPlots(res){
+  Plotly.newPlot('p1', [{
+    x: res.time,
+    y: res.stab_total,
+    type:'scatter',
+    mode:'lines',
+    line:{width:2}
+  }], baseLayout('μ / σ (total)', [0, 8]), config);
+
+  Plotly.newPlot('p2', [{
+    x: res.time,
+    y: res.asy,
+    type:'scatter',
+    mode:'lines',
+    line:{width:2}
+  }], baseLayout('1 − φN', [-0.1, 1.0]), config);
+
+  Plotly.newPlot('p3', [{
+    x: res.time,
+    y: res.pop_stab,
+    type:'scatter',
+    mode:'lines',
+    line:{width:2}
+  }], baseLayout('mean μ / σ (species)', [0, 8]), config);
+}
+
+function animateUpdate(res){
+  Plotly.animate('p1', {data:[{x:res.time, y:res.stab_total}]},
+    {transition:{duration:240, easing:'cubic-in-out'}, frame:{duration:240, redraw:false}});
+  Plotly.animate('p2', {data:[{x:res.time, y:res.asy}]},
+    {transition:{duration:240, easing:'cubic-in-out'}, frame:{duration:240, redraw:false}});
+  Plotly.animate('p3', {data:[{x:res.time, y:res.pop_stab}]},
+    {transition:{duration:240, easing:'cubic-in-out'}, frame:{duration:240, redraw:false}});
+}
+
+/* -----------------------------
+   Animated forest canvas (Notion-ish)
+------------------------------*/
+const scene = document.getElementById('scene');
+const ctx = scene.getContext('2d');
+
+function resizeCanvas(){
+  const rect = scene.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  scene.width = Math.floor(rect.width * dpr);
+  scene.height = Math.floor(rect.height * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// muted greens
+const speciesColors = [
+  '#2f5d3a','#3a6b44','#2a4f33','#476f3d','#3f5f35',
+  '#2e5a3f','#4c7a55','#2d5f4a','#3a6f5b','#356a41',
+  '#2b5a3a','#4b7a5b','#3f6b55','#2f6a59'
+];
+
+let treeLayout = null;
+
+function buildTreeLayout(SR, structuralProxy, seed){
+  const rng = mulberry32(seed + 99991);
+  const rect = scene.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+
+  const numSpecies = Math.max(2, SR);
+  const treesPerSpecies = Math.max(2, Math.floor(3 + structuralProxy*5));
+  const totalTrees = numSpecies * treesPerSpecies;
+
+  const trees = [];
+  for(let i=0;i<totalTrees;i++){
+    const sp = i % numSpecies;
+    const x = (W/(totalTrees+1))*(i+1) + (rng()-0.5)*18;
+    const ground = H - 26;
+    const y = ground - (rng()*10);
+
+    const base = 18 + structuralProxy*28;
+    const varAmp = structuralProxy*22;
+    const size = base + (rng()-0.5)*varAmp;
+
+    trees.push({x,y,size,sp, wobble:(rng()-0.5)});
+  }
+  return {trees, numSpecies};
+}
+
+function normalizeStab(stab){
+  const z = 1 - Math.exp(-0.30 * Math.max(stab, 0));
+  return clamp(z, 0, 1);
+}
+
+function drawBackgroundNotion(W,H){
+  const sky = ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#fafaf8');
+  sky.addColorStop(0.55,'#f4f4f1');
+  sky.addColorStop(1,'#efefeb');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0,0,W,H);
+
+  const fog = ctx.createLinearGradient(0,H*0.25,0,H*0.78);
+  fog.addColorStop(0,'rgba(255,255,255,0)');
+  fog.addColorStop(1,'rgba(255,255,255,0.75)');
+  ctx.fillStyle = fog;
+  ctx.fillRect(0,0,W,H);
+
+  ctx.fillStyle = 'rgba(15,15,15,0.05)';
+  ctx.fillRect(0, H-28, W, 28);
+
+  const v = ctx.createRadialGradient(W*0.5,H*0.4, 20, W*0.5,H*0.4, Math.max(W,H));
+  v.addColorStop(0,'rgba(0,0,0,0)');
+  v.addColorStop(1,'rgba(0,0,0,0.05)');
+  ctx.fillStyle = v;
+  ctx.fillRect(0,0,W,H);
+}
+
+function drawScene(res, t){
+  const rect = scene.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+
+  drawBackgroundNotion(W,H);
+
+  const structuralProxy = clamp(res.SD, 0, 1);
+
+  if(!treeLayout || treeLayout._SR !== res.SR || treeLayout._seed !== res.seed || treeLayout._SD !== res.SD){
+    treeLayout = buildTreeLayout(res.SR, structuralProxy, res.seed);
+    treeLayout._SR = res.SR;
+    treeLayout._seed = res.seed;
+    treeLayout._SD = res.SD;
+  }
+
+  const stab = res.latest.stab ?? 1.0;
+  const asy = res.latest.asy ?? 0.5;
+
+  // Wave encodes total fluctuation concept: more stable -> smaller amplitude
+  const waveY = 70;
+  const waveW = W - 24;
+  const startX = 12;
+
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = 'rgba(47,111,235,0.95)';
+  ctx.beginPath();
+  const amp = clamp((1 - normalizeStab(stab))*30, 3, 30);
+  const freq = 2 + asy*3;
+  for(let x=0;x<waveW;x+=2){
+    const nx = x/waveW;
+    const y = waveY + amp*Math.sin(nx*Math.PI*freq + t*0.025);
+    if(x===0) ctx.moveTo(startX+x, y);
+    else ctx.lineTo(startX+x, y);
+  }
+  ctx.stroke();
+
+  ctx.setLineDash([5,5]);
+  ctx.strokeStyle = 'rgba(15,15,15,0.35)';
+  ctx.lineWidth = 1.25;
+  ctx.beginPath();
+  ctx.moveTo(startX, waveY);
+  ctx.lineTo(startX+waveW, waveY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  const sway = 0.5 + 0.7*(1 - normalizeStab(stab));
+  for(const tr of treeLayout.trees){
+    const color = speciesColors[tr.sp % speciesColors.length];
+
+    const trunkH = tr.size*0.65;
+    const trunkW = 5;
+    const dx = sway * Math.sin(t*0.02 + tr.x*0.02 + tr.wobble);
+
+    ctx.fillStyle = 'rgba(15,15,15,0.06)';
+    ctx.beginPath();
+    ctx.ellipse(tr.x+dx, H-26, tr.size*0.45, 3.5, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(90,70,55,0.95)';
+    ctx.fillRect(tr.x - trunkW/2 + dx, tr.y, trunkW, trunkH);
+
+    ctx.beginPath();
+    ctx.arc(tr.x + dx, tr.y - tr.size*0.15, tr.size*0.65, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.88;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(15,15,15,0.14)';
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = 'rgba(15,15,15,0.70)';
+  ctx.font = '12px system-ui, Arial';
+  ctx.fillText('Total biomass fluctuation (concept)', 12, 18);
+}
+
+/* -----------------------------
+   UI + main loop
+------------------------------*/
+const $sr = document.getElementById('sr');
+const $sd = document.getElementById('sd');
+const $T = document.getElementById('T');
+const $W = document.getElementById('W');
+const $seed = document.getElementById('seed');
+const $srPill = document.getElementById('srPill');
+const $sdPill = document.getElementById('sdPill');
+const $regen = document.getElementById('regen');
+const $play = document.getElementById('play');
+const $stop = document.getElementById('stop');
+
+const $kStab = document.getElementById('kStab');
+const $kAsy = document.getElementById('kAsy');
+const $kPop = document.getElementById('kPop');
+const $bStab = document.getElementById('bStab');
+const $bAsy = document.getElementById('bAsy');
+const $bPop = document.getElementById('bPop');
+
+let initialized = false;
+let current = null;
+let tick = 0;
+
+let playing = false;
+let playTimer = null;
+
+function readParams(){
+  const SR = parseInt($sr.value,10);
+  const SD = clamp(parseFloat($sd.value), 0, 1);
+  const T = clamp(parseInt($T.value,10), 120, 2000);
+  const W = clamp(parseInt($W.value,10), 10, Math.min(200, T-5));
+  const seed = clamp(parseInt($seed.value,10), 1, 999999);
+  return {SR, SD, T, W, seed};
+}
+
+function updateKpis(res){
+  const s = res.latest.stab ?? null;
+  const a = res.latest.asy ?? null;
+  const p = res.latest.pop ?? null;
+
+  const stabUI = s===null ? 0 : normalizeStab(s);
+  const popUI  = p===null ? 0 : normalizeStab(p);
+
+  $kStab.textContent = s===null ? '—' : s.toFixed(2);
+  $kAsy.textContent  = a===null ? '—' : a.toFixed(2);
+  $kPop.textContent  = p===null ? '—' : p.toFixed(2);
+
+  $bStab.style.width = `${Math.round(stabUI*100)}%`;
+  $bAsy.style.width  = `${Math.round(((a ?? 0))*100)}%`;
+  $bPop.style.width  = `${Math.round(popUI*100)}%`;
+}
+
+function run({hard=false} = {}){
+  const p = readParams();
+  $srPill.textContent = String(p.SR);
+  $sdPill.textContent = p.SD.toFixed(2);
+
+  current = simulate(p);
+  updateKpis(current);
+
+  if(!initialized || hard){
+    initPlots(current);
+    initialized = true;
+  }else{
+    animateUpdate(current);
+  }
+
+  if(hard) treeLayout = null;
+}
+
+$sr.addEventListener('input', () => { $srPill.textContent = $sr.value; });
+$sd.addEventListener('input', () => { $sdPill.textContent = Number($sd.value).toFixed(2); });
+
+$sr.addEventListener('change', () => run());
+$sd.addEventListener('change', () => run());
+
+$T.addEventListener('change', () => run({hard:true}));
+$W.addEventListener('change', () => run({hard:true}));
+$seed.addEventListener('change', () => run({hard:true}));
+$regen.addEventListener('click', () => run({hard:true}));
+
+function startPlay(){
+  if(playing) return;
+  playing = true;
+  $play.disabled = true;
+  $stop.disabled = false;
+
+  let sr = parseInt($sr.value,10);
+  const min = parseInt($sr.min,10);
+  const max = parseInt($sr.max,10);
+
+  playTimer = setInterval(() => {
+    if(!playing) return;
+    sr += 1;
+    if(sr > max) sr = min;
+    $sr.value = String(sr);
+    $srPill.textContent = String(sr);
+    run();
+  }, 650);
+}
+function stopPlay(){
+  playing = false;
+  $play.disabled = false;
+  $stop.disabled = true;
+  if(playTimer) clearInterval(playTimer);
+  playTimer = null;
+}
+$play.addEventListener('click', startPlay);
+$stop.addEventListener('click', stopPlay);
+
+function loop(){
+  tick += 1;
+  if(current) drawScene(current, tick);
+  requestAnimationFrame(loop);
+}
+
+run({hard:true});
+loop();
+</script>
+</body>
+</html>
