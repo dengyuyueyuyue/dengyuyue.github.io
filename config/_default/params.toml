@@ -20,7 +20,12 @@ theme_default = "system" # available options [light/dark/system]
 # Main Sections
 mainSections = ["blog"]
 # contact form action
-contact_form_action = "#" # contact form works with [https://airform.io/] or [https://formspree.io]
+# To use Formspree: 
+# 1. Go to https://formspree.io/ and create a free account
+# 2. Create a new form and get your form endpoint (e.g., https://formspree.io/f/YOUR_FORM_ID)
+# 3. Replace the URL below with your Formspree form endpoint
+# 4. Your emails will be sent to the email address you registered with Formspree
+contact_form_action = "https://formspree.io/f/xreggoyq" # Replace YOUR_FORM_ID with your actual Formspree form ID
 # google tag manager, see https://developers.google.com/tag-manager/
 google_tag_manager = "" # example: G-XXXXXXXXXX
 google_adsense = ""     # example: ca-pub-xxxxxxxxxxxxxxxx
@@ -38,7 +43,7 @@ preloader = "" # use jpg, png, svg or gif format.
 # Navigation button
 [navigation_button]
 enable = true
-label = "get a quote"
+label = "Contact us"
 link = "contact"
 
 # search
