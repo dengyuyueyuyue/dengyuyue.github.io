@@ -99,7 +99,6 @@ In species-rich natural tropical forests, higher structural diversity—especial
 
 ## The core question
 
-
 > **Is the effect of species richness (SR) on ecosystem stability universally positive?**
 >
 > We test whether SR consistently enhances temporal stability across  **tropical, subtropical, temperate, and boreal forests** , or whether its role changes in species-rich systems.
@@ -112,14 +111,11 @@ In species-rich natural tropical forests, higher structural diversity—especial
 >
 > Do they act primarily via  **species asynchrony** ,  **population-level stability** , or through more **direct structural controls** on forest dynamics?
 
-
-
 ## A Conceptual View of Their Dynamic Relationship
 
 {{< stab_show height="800px" width="100%" >}}
 
 ---
-
 
 # Summary:
 
@@ -167,7 +163,6 @@ We prefer **BCI-style FDP tree census data** (tree-level tables), and will provi
   - spatial coordinates (optional but strongly preferred for spatial analyses)
 - At least **three censuses** preferred (more is better)
 - Site metadata: plot area, census years, and basic climate descriptors if available
-
 
 ---
 

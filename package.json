@@ -6,6 +6,7 @@
   "author": "zeon.studio",
   "scripts": {
     "sync-homepage": "node scripts/sync_homepage.js",
+    "publish": "node scripts/publish.js",
     "dev": "node scripts/sync_homepage.js && concurrently \"node scripts/themeGenerator.js --watch\" \"hugo server\"",
     "build": "node scripts/sync_homepage.js && node scripts/themeGenerator.js && hugo --gc --minify --templateMetrics --templateMetricsHints --forceSyncStatic",
     "preview": "node scripts/themeGenerator.js && hugo server --disableFastRender --navigateToChanged --templateMetrics --templateMetricsHints --watch --forceSyncStatic -e production --minify",

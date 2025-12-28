@@ -1,0 +1,103 @@
+<!-- JS Plugins + Main script -->
+{{ $scripts := slice }}
+{{ $scriptsLazy := slice }}
+{{ range site.Params.plugins.js }}
+  {{ if findRE "^http" .link }}
+    <script
+      src="{{ .link | relURL }}"
+      type="application/javascript"
+      {{ .attributes | safeHTMLAttr }}></script>
+  {{ else }}
+    {{ if not .lazy }}
+      {{ $scripts = $scripts | append (resources.Get .link) }}
+    {{ else }}
+      {{ $scriptsLazy = $scriptsLazy | append (resources.Get .link) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+
+<!-- main script -->
+{{ $scripts = $scripts | append (resources.Get "js/main.js") }}
+{{ $scripts = $scripts | resources.Concat "js/script.js" }}
+
+{{ $scriptsLazy = $scriptsLazy | resources.Concat "js/script-lazy.js" }}
+
+{{ if hugo.IsProduction }}
+  {{ $scripts = $scripts | minify | fingerprint }}
+  {{ $scriptsLazy = $scriptsLazy | minify | fingerprint }}
+{{ end }}
+
+{{/* scripts */}}
+<script
+  crossorigin="anonymous"
+  integrity="{{ $scripts.Data.Integrity }}"
+  src="{{ $scripts.RelPermalink }}"></script>
+
+{{/* scripts lazy */}}
+<script
+  defer
+  async
+  crossorigin="anonymous"
+  integrity="{{ $scriptsLazy.Data.Integrity }}"
+  src="{{ $scriptsLazy.RelPermalink }}"></script>
+
+<!-- progressive web app -->
+{{/* https://github.com/gethugothemes/hugo-modules/tree/master/pwa */}}
+{{ partialCached "pwa.html" . }}
+
+
+<!-- cookie consent -->
+{{/* https://github.com/gethugothemes/hugo-modules/tree/master/components/cookie-consent */}}
+{{ partialCached "cookie-consent.html" . }}
+
+
+<!-- google adsense -->
+{{/* https://github.com/gethugothemes/hugo-modules/tree/master/adsense */}}
+{{ partialCached "adsense-script.html" . }}
+
+
+<!-- announcement -->
+{{/* https://github.com/gethugothemes/hugo-modules/tree/master/components/announcement */}}
+{{ partialCached "announcement-script.html" . }}
+
+<!-- GitHub Pages subpath fix: rewrite leading-slash *asset* URLs to respect repo basePath -->
+<script>
+  (function () {
+    // Goal: fix hardcoded asset URLs like "/images/...", "/videos/..." on GH Pages project sites.
+    // IMPORTANT: do NOT rewrite navigation links; Hugo already generates correct relLangURL links.
+    try {
+      var parts = (window.location.pathname || '').split('/').filter(Boolean);
+      // For https://user.github.io/repo/... => parts[0] === "repo"
+      var repo = parts.length ? parts[0] : '';
+      if (!repo) return;
+      var basePath = '/' + repo; // "/repo"
+
+      function needsPrefix(url) {
+        return (
+          typeof url === 'string' &&
+          url.startsWith('/') &&
+          !url.startsWith(basePath + '/') &&
+          !url.startsWith('//')
+        );
+      }
+
+      // Only patch asset-like src attributes (no <a href> rewriting).
+      var selectors = [
+        'img[src^="/"]',
+        'video[src^="/"]',
+        'video source[src^="/"]',
+        'audio[src^="/"]',
+        'audio source[src^="/"]',
+        'iframe[src^="/"]'
+      ].join(',');
+
+      document.querySelectorAll(selectors).forEach(function (el) {
+        var val = el.getAttribute('src');
+        if (needsPrefix(val)) el.setAttribute('src', basePath + val);
+      });
+    } catch (e) {}
+  })();
+</script>
+
+
