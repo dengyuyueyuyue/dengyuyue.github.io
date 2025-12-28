@@ -14,6 +14,7 @@
       <!-- Background (image or video) -->
       <div class="absolute inset-0">
         {{ with .background_video }}
+          {{- $videoSrc := (strings.TrimPrefix "/" .) | relURL -}}
           <video
             class="h-full w-full object-cover"
             autoplay
@@ -21,11 +22,16 @@
             loop
             playsinline
             preload="metadata">
-            <source src="{{ . | relURL }}" type="video/mp4" />
+            <source src="{{ $videoSrc }}" type="video/mp4" />
           </video>
         {{ else }}
           {{ with .background_image }}
-            {{ partial "image" (dict "Src" . "Alt" "Hero background" "Loading" "eager" "Class" "h-full w-full object-cover" "DisplayXL" "2400x" ) }}
+            {{- $imgSrc := (strings.TrimPrefix "/" .) | relURL -}}
+            <img
+              src="{{ $imgSrc }}"
+              alt="Hero background"
+              class="h-full w-full object-cover"
+              loading="eager" />
           {{ end }}
         {{ end }}
         <!-- Overlay -->
@@ -58,9 +64,13 @@
               <div class="mt-8 flex flex-wrap gap-3">
                 {{ with .button }}
                   {{ if .enable }}
+                    {{- $btnLink := .link -}}
+                    {{- if not (strings.HasPrefix $btnLink `http`) -}}
+                      {{- $btnLink = ((strings.TrimPrefix "/" $btnLink) | relLangURL) -}}
+                    {{- end -}}
                     <a
                       class="btn btn-primary"
-                      href="{{ .link | relURL }}"
+                      href="{{ $btnLink }}"
                       {{ if strings.HasPrefix .link `http` }}
                         target="_blank" rel="noopener"
                       {{ end }}>
@@ -71,9 +81,13 @@
                 {{ end }}
                 {{ with .button_secondary }}
                   {{ if .enable }}
+                    {{- $btn2Link := .link -}}
+                    {{- if not (strings.HasPrefix $btn2Link `http`) -}}
+                      {{- $btn2Link = ((strings.TrimPrefix "/" $btn2Link) | relLangURL) -}}
+                    {{- end -}}
                     <a
                       class="btn btn-outline-primary bg-white/10 text-white border-white/40 hover:bg-white/20 hover:border-white/60"
-                      href="{{ .link | relURL }}"
+                      href="{{ $btn2Link }}"
                       {{ if strings.HasPrefix .link `http` }}
                         target="_blank" rel="noopener"
                       {{ end }}>
