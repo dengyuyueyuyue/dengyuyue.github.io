@@ -1,17 +1,33 @@
 ---
 # Banner
 banner:
-  title: "From ForestGEO Jianfengling Plot (50ha)"
-  content: "Welcome to Han's lab page, we ."
-  image: "/images/banner.png"
+  # CrowtherLab-style hero (full-bleed background + big headline)
+  tagline: "Embracing Nature."
+  title: "Committed to Science."
+  #subtitle: "We study forest ecosystems to understand how biodiversity and structure shape stability, productivity, and resilience."
+
+  # Background assets
+  # Put image in: assets/images/hero/ (recommended)
+  #background_image: "/images/Forestgeo_workshop.jpg"
+  # Optional video (recommended location): static/videos/hero/hero.mp4
+  background_video: "/videos/hero/forest_banner2.mp4"
+  overlay_opacity: 0.35
+
+  # Primary CTA
   button:
     enable: true
-    label: "Get Started For Free"
-    link: "https://github.com/zeon-studio/hugoplate"
+    label: "Contact us"
+    link: "/contact"
+
+  # Secondary CTA (optional)
+  button_secondary:
+    enable: true
+    label: "Explore our proposal"
+    link: "/blog"
 
 # Features
 features:
-  - title: "What's Included in Hugoplate"
+  - title: "Brief introduction of Han's lab"
     image: "/images/service-1.png"
     content: "Hugoplate is a comprehensive starter template that includes everything you need to get started with your Hugo project. What's Included in Hugoplate"
     bulletpoints:
@@ -26,7 +42,7 @@ features:
       label: "Get Started Now"
       link: "#"
 
-  - title: "Our activities！"
+  - title: "Our activities！！"
     image: "/images/Forestgeo_workshop.jpg"
     content: "Hugo is an all-in-one web framework for building fast, content-focused websites. It offers a range of exciting features for developers and website creators. Some of the key features are:"
     bulletpoints:

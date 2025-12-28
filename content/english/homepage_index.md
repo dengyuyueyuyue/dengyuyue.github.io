@@ -10,7 +10,7 @@ banner:
   # Put image in: assets/images/hero/ (recommended)
   #background_image: "/images/Forestgeo_workshop.jpg"
   # Optional video (recommended location): static/videos/hero/hero.mp4
-  background_video: "/videos/hero/forest_banner.mp4"
+  background_video: "/videos/hero/forest_banner2.mp4"
   overlay_opacity: 0.35
 
   # Primary CTA
@@ -27,7 +27,7 @@ banner:
 
 # Features
 features:
-  - title: "What's Included in Hugoplate"
+  - title: "Brief introduction of Han's lab"
     image: "/images/service-1.png"
     content: "Hugoplate is a comprehensive starter template that includes everything you need to get started with your Hugo project. What's Included in Hugoplate"
     bulletpoints:
