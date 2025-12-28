@@ -1,15 +1,14 @@
 ---
-title: "When Structure Becomes the Villain: Structural Diversity and Long-Term Stability in Natural 。Forests"
+title: "When Structure Becomes the Villain: Structural Diversity and Long-Term Stability in Natural Forests"
 meta_title: ""
 description: "this is meta description"
-date: 2025-12-20T05:00:00Z
+date: 2025-11-20T05:00:00Z
 image: "/images/Structurediversity.png"
 categories: ["Macroecology", "Data","Ecology","Structure diversity"]
 author: "Yuyue Deng"
 tags: ["Macroecology", "Ecology"]
 draft: false
 ---
-
 {{< project_panels start="2025-11-20" fdp_count="4" >}}
 {{< /project_panels >}}
 
