@@ -118,14 +118,23 @@
     <div class="order-1 ml-auto flex flex-shrink-0 items-center md:order-2 lg:ml-0">
       {{ with site.Params.search }}
         {{ if .enable }}
+          <!-- Desktop search box (Crowther-like) -->
           <button
+            type="button"
+            data-target="search-modal"
+            class="hidden lg:flex items-center gap-2 mr-5 rounded-full border border-border dark:border-darkmode-border bg-light dark:bg-darkmode-light px-4 py-2 text-sm text-text-dark dark:text-white hover:border-primary/40 hover:bg-primary/5 dark:hover:bg-white/5 transition">
+            <i class="fa-solid fa-search text-xs opacity-70"></i>
+            <span class="opacity-80">Search…</span>
+            <span class="ml-2 text-[11px] opacity-70 border border-border dark:border-darkmode-border rounded px-1.5 py-0.5">Ctrl K</span>
+          </button>
+
+          <!-- Mobile search icon -->
+          <button
+            type="button"
             aria-label="search"
-            class="border-border text-text-dark hover:text-primary
+            class="lg:hidden border-border text-text-dark hover:text-primary
             dark:border-darkmode-border mr-5 inline-block border-r pr-5
-            text-xl dark:text-white cursor-pointer dark:hover:text-darkmode-primary
-            {{ if not (or site.Params.navigation_button.enable site.Params.theme_switcher) }}
-              lg:border-r-0 lg:pr-0
-            {{ end }}"
+            text-xl dark:text-white cursor-pointer dark:hover:text-darkmode-primary"
             data-target="search-modal">
             <i class="fa-solid fa-search"></i>
           </button>

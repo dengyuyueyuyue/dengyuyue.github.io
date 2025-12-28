@@ -1,5 +1,5 @@
 ---
-title: "When Structure Becomes the Villain: Structural Diversity and Long-Term Stability in Natural Tropical Forests"
+title: "When Structure Becomes the Villain: Structural Diversity and Long-Term Stability in Natural 。Forests"
 meta_title: ""
 description: "this is meta description"
 date: 2025-12-20T05:00:00Z
@@ -9,6 +9,10 @@ author: "Yuyue Deng"
 tags: ["Macroecology", "Ecology"]
 draft: false
 ---
+
+{{< project_panels start="2025-11-20" fdp_count="4" >}}
+{{< /project_panels >}}
+
 ## The traditional view on biodiversity and temporal stability
 
 Most forest ecologists grew up with a reassuring idea: **more biodiversity stabilizes ecosystem functioning** (maintaining [temporal stability](https://en.wikipedia.org/wiki/Ecological_stability) over time).

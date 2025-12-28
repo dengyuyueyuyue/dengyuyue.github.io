@@ -111,7 +111,24 @@
             class="mb:md-0 {{ if not (modBool $i 2) }}
               md:order-2
             {{ end }} md:col-5 mb-6">
-            {{ partial "image" (dict "Src" .image "Alt" "feature image" "DisplayXL" "520x" "DisplayLG" "425x" "DisplayMD" "360x") }}
+            {{/* If a feature provides .images (slice), render a Swiper slider; else fallback to single .image */}}
+            {{ $imgs := .images | default slice }}
+            {{ if gt (len $imgs) 0 }}
+              <div class="swiper activities-slider">
+                <div class="swiper-wrapper">
+                  {{ range $imgs }}
+                    <div class="swiper-slide">
+                      {{ partial "image" (dict "Src" . "Alt" "activity image" "Class" "w-full rounded-lg" "DisplayXL" "520x" "DisplayLG" "425x" "DisplayMD" "360x") }}
+                    </div>
+                  {{ end }}
+                </div>
+                <!-- nav -->
+                <div class="activities-slider-prev"></div>
+                <div class="activities-slider-next"></div>
+              </div>
+            {{ else }}
+              {{ partial "image" (dict "Src" .image "Alt" "feature image" "DisplayXL" "520x" "DisplayLG" "425x" "DisplayMD" "360x") }}
+            {{ end }}
           </div>
           <div
             class="{{ if not (modBool $i 2) }}

@@ -5,7 +5,7 @@
 # For production, GitHub Actions will override this with the correct baseURL
 baseURL = "/"
 # Title of your website (required).
-title = "Han's lab"
+title = "Han lab"
 # Your theme name
 theme = "hugoplate"
 # Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
@@ -145,6 +145,10 @@ lazy = false
 [[params.plugins.js]]
 link = "plugins/swiper/swiper-bundle.js" 
 # https://github.com/gethugothemes/hugo-modules/tree/master/gallery-slider
+lazy = false
+
+[[params.plugins.js]]
+link = "js/custom.js"
 lazy = false
 [[params.plugins.js]]
 link = "plugins/glightbox/glightbox.js" # https://github.com/gethugothemes/hugo-modules/tree/master/gallery-slider

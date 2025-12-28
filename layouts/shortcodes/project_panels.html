@@ -1,0 +1,45 @@
+{{- $start := .Get "start" | default "2025-11-20" -}}
+{{- $fdpCount := .Get "fdp_count" | default "4" -}}
+
+<div class="project-panels">
+  <!-- Panel 1: duration -->
+  <div class="project-panel">
+    <div class="project-panel-label">Project duration</div>
+    <div
+      class="project-panel-value"
+      data-project-duration-start="{{ $start }}">
+      <span class="project-panel-number">—</span>
+      <span class="project-panel-unit">days</span>
+    </div>
+    <div class="project-panel-sub">Since {{ $start }}</div>
+  </div>
+
+  <!-- Panel 2: FDP sites -->
+  <details class="project-panel project-panel-details">
+    <summary class="project-panel-summary">
+      <span class="project-panel-label">FDP site joined</span>
+      <span class="project-panel-value">
+        <span class="project-panel-number">{{ $fdpCount }}</span>
+        <span class="project-panel-unit">sites</span>
+      </span>
+      <span class="project-panel-sub">Click to show details</span>
+      <span class="project-panel-caret" aria-hidden="true"></span>
+    </summary>
+
+    <div class="project-panel-sites">
+      {{- $inner := .Inner | strings.TrimSpace -}}
+      {{- if $inner -}}
+        {{ $inner | markdownify }}
+      {{- else -}}
+        <ul>
+          <li><a href="https://forestgeo.si.edu/sites/neotropics/barro-colorado-island" target="_blank" rel="noopener">Barro Colorado Island</a></li>
+          <li><a href="https://forestgeo.si.edu/sites/philippines/palanan" target="_blank" rel="noopener">Palanan</a></li>
+          <li><a href="https://forestgeo.si.edu/sites/asia/hainan" target="_blank" rel="noopener">Jianfengling</a></li>
+          <li><a href="https://forestgeo.si.edu/sites/north-america/luquillo" target="_blank" rel="noopener">Luquillo</a></li>
+        </ul>
+      {{- end -}}
+    </div>
+  </details>
+</div>
+
+

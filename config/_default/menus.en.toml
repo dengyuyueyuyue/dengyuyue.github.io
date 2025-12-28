@@ -12,7 +12,7 @@ name = "About Us"
 
 [[main]]
 parent = "About Us"
-name = "About the PI"
+name = "About Han"
 url = "/about"
 weight = 1
 
@@ -55,18 +55,13 @@ url = "/blog"
 
 [[main]]
 parent = "Publications"
-name = "Contact"
-url = "/contact"
-
-[[main]]
-parent = "Publications"
 name = "Our Publications"
 url = "/publications"
 
 [[main]]
 parent = "Publications"
-name = "404 Page"
-url = "/404"
+name = "Our Book"
+url = "/books"
 
 [[main]]
 name = "Data Sources"

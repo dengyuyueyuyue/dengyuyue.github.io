@@ -1,0 +1,66 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-10">
+          <div class="content">
+            {{/* Reference-style list (Crowther-like) with safe year sorting (handles missing year). */}}
+            {{ $items := slice }}
+            {{ range .Pages }}
+              {{ if not .Draft }}
+                {{ $items = $items | append (dict "p" . "y" (int (.Params.year | default 0))) }}
+              {{ end }}
+            {{ end }}
+            {{ $items = sort $items "y" "desc" }}
+
+            {{ if eq (len $items) 0 }}
+              <p class="text-center text-muted">No books yet. (Add Markdown files under <code>content/english/books/</code>.)</p>
+            {{ else }}
+              <div class="space-y-6">
+                {{ range $items }}
+                  {{ $page := .p }}
+                  {{ $title := $page.Title }}
+                  {{ $authors := $page.Params.authors | default slice }}
+                  {{ $year := (int (.y | default 0)) }}
+                  {{ $publisher := $page.Params.publisher | default "" }}
+                  {{ $external := $page.Params.external_url | default "" }}
+
+                  <div class="leading-relaxed">
+                    {{ if $external }}
+                      <a class="font-semibold hover:text-primary" href="{{ $external }}" target="_blank" rel="noopener">
+                        {{ $title }}
+                      </a>
+                    {{ else }}
+                      <a class="font-semibold hover:text-primary" href="{{ $page.RelPermalink }}">{{ $title }}</a>
+                    {{ end }}
+
+                    {{ if gt (len $authors) 0 }}
+                      <span> {{ delimit $authors ", " }}</span>
+                    {{ end }}
+                    {{ if gt $year 0 }}
+                      <span> ({{ $year }}).</span>
+                    {{ else }}
+                      <span>.</span>
+                    {{ end }}
+
+                    {{ if $publisher }}
+                      <em> {{ $publisher }}</em><span>.</span>
+                    {{ end }}
+
+                    {{ with $page.Params.isbn }}
+                      <span class="text-sm opacity-80"> ISBN: {{ . }}</span>
+                    {{ end }}
+                  </div>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{{ end }}
+
+

@@ -1,6 +1,6 @@
 ---
-title: "About the PI"
-meta_title: "About the PI"
+title: "About Han"
+meta_title: "About Han"
 
 description: "Forest ecologist focusing on tree size inequality, structural diversity, and forest stability across large forest dynamics plots."
 #image: "/images/avatar.png"

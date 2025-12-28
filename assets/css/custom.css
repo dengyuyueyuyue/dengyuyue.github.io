@@ -27,6 +27,194 @@
   min-height: var(--site-header-h);
 }
 
+/* Publications sticky search bar (Crowther-like) */
+.pub-search-bar {
+  position: sticky;
+  top: calc(var(--site-header-h) + 10px);
+  z-index: 20;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.pub-search-input {
+  width: 100%;
+  max-width: 720px;
+  padding: 0.9rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 15, 15, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  color: #111827;
+  outline: none;
+}
+.pub-search-input::placeholder {
+  color: rgba(17, 24, 39, 0.55);
+}
+.pub-search-input:focus {
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+.dark .pub-search-input {
+  background: rgba(17, 24, 39, 0.65);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+.dark .pub-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Project stats panels (for blog pages like P1) */
+.project-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 1.25rem 0 1.5rem;
+}
+@media (max-width: 768px) {
+  .project-panels {
+    grid-template-columns: 1fr;
+  }
+}
+.project-panel {
+  border: 1px solid rgba(15, 15, 15, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
+  padding: 14px 16px;
+  backdrop-filter: blur(8px);
+}
+.dark .project-panel {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(17, 24, 39, 0.55);
+}
+.project-panel-label {
+  font-size: 12px;
+  color: rgba(17, 24, 39, 0.65);
+  font-weight: 650;
+}
+.dark .project-panel-label {
+  color: rgba(255, 255, 255, 0.65);
+}
+.project-panel-value {
+  margin-top: 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.project-panel-number {
+  font-size: 30px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  color: rgba(17, 24, 39, 0.95);
+}
+.dark .project-panel-number {
+  color: rgba(255, 255, 255, 0.92);
+}
+.project-panel-unit {
+  font-size: 13px;
+  color: rgba(17, 24, 39, 0.55);
+  font-weight: 650;
+}
+.dark .project-panel-unit {
+  color: rgba(255, 255, 255, 0.55);
+}
+.project-panel-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(17, 24, 39, 0.55);
+}
+.dark .project-panel-sub {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* FDP site list (always visible) */
+.project-panel-sites {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(15, 15, 15, 0.18);
+}
+.dark .project-panel-sites {
+  border-top-color: rgba(255, 255, 255, 0.18);
+}
+.project-panel-sites ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.project-panel-sites a {
+  text-decoration: underline;
+}
+
+/* Collapsible (details/summary) styling for FDP list */
+.project-panel-details {
+  cursor: pointer;
+}
+.project-panel-details > summary {
+  list-style: none;
+  display: block;
+  position: relative;
+  padding-right: 28px; /* space for caret */
+}
+.project-panel-details > summary::-webkit-details-marker {
+  display: none;
+}
+.project-panel-caret {
+  position: absolute;
+  right: 12px;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(17, 24, 39, 0.55);
+  border-bottom: 2px solid rgba(17, 24, 39, 0.55);
+  transform: rotate(45deg);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+.dark .project-panel-caret {
+  border-right-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.55);
+}
+.project-panel-details[open] .project-panel-caret {
+  transform: rotate(-135deg);
+}
+
+/* Activities slider controls (simple left/right arrows) */
+.activities-slider {
+  position: relative;
+}
+.activities-slider-prev,
+.activities-slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+.activities-slider-prev {
+  left: 10px;
+}
+.activities-slider-next {
+  right: 10px;
+}
+.activities-slider-prev::before,
+.activities-slider-next::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid rgba(255, 255, 255, 0.9);
+  border-right: 2px solid rgba(255, 255, 255, 0.9);
+}
+.activities-slider-prev::before {
+  transform: rotate(-135deg);
+}
+.activities-slider-next::before {
+  transform: rotate(45deg);
+}
+
 /* Fixed height for author cards */
 .authors-list .row > div {
   display: flex;

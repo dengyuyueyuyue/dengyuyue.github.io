@@ -27,7 +27,7 @@ banner:
 
 # Features
 features:
-  - title: "Brief introduction of Han's lab"
+  - title: "About Han lab"
     image: "/images/service-1.png"
     content: "Hugoplate is a comprehensive starter template that includes everything you need to get started with your Hugo project. What's Included in Hugoplate"
     bulletpoints:
@@ -43,7 +43,12 @@ features:
       link: "#"
 
   - title: "Our activities！！"
-    image: "/images/Forestgeo_workshop.jpg"
+    # Activities slider images (stored under assets/images/activities/)
+    images:
+      - "/images/activities/Forestgeo_workshop.jpg"
+      - "/images/activities/Han_foregeo.jpg"
+      - "/images/activities/YYD_foreGEO.jpg"
+      - "/images/activities/YYD_Maepin.jpg"
     content: "Hugo is an all-in-one web framework for building fast, content-focused websites. It offers a range of exciting features for developers and website creators. Some of the key features are:"
     bulletpoints:
       - "Zero JS, by default: No JavaScript runtime overhead to slow you down."

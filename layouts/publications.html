@@ -3,82 +3,97 @@
 
   <section class="section">
     <div class="container">
-      <div class="row">
-        {{ $pubs := .Site.Data.publications.publications | default slice }}
-        {{ if eq (len $pubs) 0 }}
+      {{ $pubs := .Site.Data.publications.publications | default slice }}
+      {{ if eq (len $pubs) 0 }}
+        <div class="row">
           <div class="col-12">
-            <p class="text-center text-muted">No publications found. Please check data/publications.yaml</p>
+            <p class="text-center text-muted">No publications found. Please check `data/publications.yaml`.</p>
           </div>
-        {{ else }}
-          <div class="col-12 mb-4">
-            <p class="text-sm text-muted">Total publications: {{ len $pubs }}</p>
-          </div>
-        {{ end }}
-        {{ range $pubs }}
-          <div class="md:col-6 lg:col-4 mb-8">
-            <div class="bg-body dark:bg-darkmode-body rounded p-6 h-full">
-              <h3 class="h4 mb-3">
-                <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="hover:text-primary">
-                  {{ .title }}
-                </a>
-              </h3>
-              
-              <div class="mb-3">
-                <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
-                  <strong>Authors:</strong> {{ delimit .authors ", " }}
-                </p>
-                <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
-                  <strong>Journal:</strong> {{ .journal }}{{ if .volume }}, Vol. {{ .volume }}{{ end }}{{ if .pages }}, pp. {{ .pages }}{{ end }}, {{ .year }}
-                </p>
-                {{ if .doi }}
-                  <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
-                    <strong>DOI:</strong> 
-                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-                      {{ .doi }}
-                    </a>
-                  </p>
+        </div>
+      {{ else }}
+        {{/* CrowtherLab-style: citation list, grouped by year (newest first) */}}
+        {{ $sorted := sort $pubs "year" "desc" }}
+        <div class="row justify-center">
+          <div class="lg:col-10">
+            <!-- Sticky publications-only search (keeps global Cmd/Ctrl+K search intact) -->
+            <div class="pub-search-bar">
+              <input
+                class="pub-search-input"
+                type="search"
+                placeholder="Search publications by title, author, year or journal"
+                aria-label="Search publications" />
+            </div>
+
+            <div class="content pub-list">
+              {{ $currentYear := -1 }}
+              {{ range $i, $p := $sorted }}
+                {{ $y := (int (default 0 $p.year)) }}
+                {{ if ne $y $currentYear }}
+                  {{ if ne $currentYear -1 }}
+                    </div>
+                    </section>
+                  {{ end }}
+                  <section class="pub-year" data-year="{{ if gt $y 0 }}{{ $y }}{{ else }}other{{ end }}">
+                  <h2 class="h3 mt-12 mb-6">{{ if gt $y 0 }}{{ $y }}{{ else }}Other{{ end }}</h2>
+                  <div class="space-y-5">
+                  {{ $currentYear = $y }}
                 {{ end }}
-                {{ if .pmid }}
-                  <p class="text-sm text-text-dark dark:text-darkmode-text-dark mb-1">
-                    <strong>PubMed ID:</strong> 
-                    <a href="https://pubmed.ncbi.nlm.nih.gov/{{ .pmid }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">
-                      {{ .pmid }}
-                    </a>
-                  </p>
+
+                {{/* Prefer explicit url; fall back to DOI URL if present */}}
+                {{ $doi := ($p.doi | default "") }}
+                {{ $doiURL := "" }}
+                {{ if $doi }}
+                  {{ $doiURL = printf "https://doi.org/%s" $doi }}
                 {{ end }}
+                {{ $link := ($p.url | default $doiURL) }}
+
+                {{ $authors := ($p.authors | default slice) }}
+                {{ $journal := ($p.journal | default "") }}
+                {{ $hay := printf "%s %s %d %s %s %s" ($p.title | plainify) (delimit $authors ", " | plainify) $y ($journal | plainify) (($p.volume | default "") | plainify) (($p.pages | default "") | plainify) }}
+
+                <div class="leading-relaxed pub-item" data-search="{{ $hay | lower }}">
+                  {{ if $link }}
+                    <a class="font-semibold hover:text-primary" href="{{ $link }}" target="_blank" rel="noopener">
+                      {{ $p.title }}
+                    </a>
+                  {{ else }}
+                    <span class="font-semibold">{{ $p.title }}</span>
+                  {{ end }}
+
+                  {{ if gt (len $authors) 0 }}
+                    <span> {{ delimit $authors ", " }}</span>
+                  {{ end }}
+                  {{ if gt $y 0 }}
+                    <span> ({{ $y }}).</span>
+                  {{ else }}
+                    <span>.</span>
+                  {{ end }}
+
+                  {{ with $p.journal }}
+                    <em> {{ . }}</em>
+                  {{ end }}
+                  {{ with $p.volume }}
+                    <span>, {{ . }}</span>
+                  {{ end }}
+                  {{ with $p.pages }}
+                    <span>, {{ . }}</span>
+                  {{ end }}
+                  <span>.</span>
+
+                  {{ if $doiURL }}
+                    <span> </span>
+                    <a class="text-primary hover:underline break-all" href="{{ $doiURL }}" target="_blank" rel="noopener">
+                      {{ $doiURL }}
+                    </a>
+                  {{ end }}
+                </div>
+              {{ end }}
               </div>
-
-              {{ if .abstract }}
-                <p class="mb-4 text-sm">{{ .abstract | truncate 150 }}</p>
-              {{ end }}
-
-              {{ if .categories }}
-                <div class="mb-3">
-                  {{ range .categories }}
-                    <span class="inline-block bg-light dark:bg-darkmode-light rounded px-2 py-1 text-xs mr-2 mb-2">
-                      {{ . }}
-                    </span>
-                  {{ end }}
-                </div>
-              {{ end }}
-
-              {{ if .tags }}
-                <div class="mb-4">
-                  {{ range .tags }}
-                    <span class="inline-block bg-primary/10 dark:bg-darkmode-primary/20 rounded px-2 py-1 text-xs mr-2 mb-2">
-                      {{ . }}
-                    </span>
-                  {{ end }}
-                </div>
-              {{ end }}
-
-              <a class="btn btn-outline-primary btn-sm" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
-                View Publication
-              </a>
+              </section>
             </div>
           </div>
-        {{ end }}
-      </div>
+        </div>
+      {{ end }}
     </div>
   </section>
 {{ end }}
