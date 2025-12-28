@@ -60,7 +60,7 @@ show_categories = true
 # announcement
 # announcement module: https://github.com/gethugothemes/hugo-modules/tree/master/components/announcement
 [announcement]
-enable = true
+enable = false
 expire_days = 7
 content = "<span class='text-center block'>♥️ Want to join us? You can contact <a class='underline' href='mailto:dengyuyue96@gmail.com?subject=Want to join us'>Dr. Deng</a></span>"
 
