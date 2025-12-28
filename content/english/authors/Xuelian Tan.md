@@ -4,6 +4,10 @@ email: tanxlian12@gmail.com
 #image: "/images/avatar.png"
 description: this is meta description
 social:
+  - name: gmail
+    icon: fa-solid fa-envelope
+    link: mailto:tanxlian12@gmail.com
+
   - name: github
     icon: fa-brands fa-github
     link: https://github.com

@@ -216,7 +216,7 @@ We fully respect plot-level data governance.
 If you manage or work with a Forest Dynamics Plot and are interested in testing how
 **structural diversity shapes long-term stability**, we would be very happy to connect.
 
-- Project responsor: **Yuyue Deng**
+- **Project contact**: [Yuyue Deng]({{< relref "authors/Yuyue Deng.md" >}})
 - Suggested email subject line: *“FDP collaboration: structural diversity & long-term stability”*
 
 {{< callout type="warning" title="One-sentence pitch (copy & paste)" >}}

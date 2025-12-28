@@ -4,6 +4,10 @@ email: dengyuyue96@gmail.com
 # image: "images/avatar.png"  # 注释掉以使用 Gravatar 头像
 description: this is meta description
 social:
+  - name: gmail
+    icon: fa-solid fa-envelope
+    link: mailto:dengyuyue96@gmail.com
+
   - name: github
     icon: fa-brands fa-github
     link: https://github.com/dengyuyueyuyue

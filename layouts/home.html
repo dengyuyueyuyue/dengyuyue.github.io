@@ -8,34 +8,80 @@
 
   <!-- Banner -->
   {{ with $homepageContent.Params.banner }}
-    <section class="section pt-14">
-      <div class="container">
-        <div class="row justify-center">
-          <div class="lg:col-7 md:col-9 mb-8 text-center">
-            <h1 class="mb-4 text-h3 lg:text-h1">
-              {{ .title | markdownify }}
-            </h1>
-            <p class="mb-8">
-              {{ .content | markdownify }}
-            </p>
-            {{ with .button }}
-              {{ if .enable }}
-                <a
-                  class="btn btn-primary"
-                  href="{{ .link | absURL }}"
-                  {{ if strings.HasPrefix .link `http` }}
-                    target="_blank" rel="noopener"
-                  {{ end }}>
-                  {{ .label }}
-                  <i class="fa fa-arrow-right pl-2"></i>
-                </a>
+    {{/* Crowther-like hero: full-bleed background + overlay + compact content */}}
+    {{ $overlay := .overlay_opacity | default 0.55 }}
+    <section class="relative overflow-hidden">
+      <!-- Background (image or video) -->
+      <div class="absolute inset-0">
+        {{ with .background_video }}
+          <video
+            class="h-full w-full object-cover"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata">
+            <source src="{{ . | relURL }}" type="video/mp4" />
+          </video>
+        {{ else }}
+          {{ with .background_image }}
+            {{ partial "image" (dict "Src" . "Alt" "Hero background" "Loading" "eager" "Class" "h-full w-full object-cover" "DisplayXL" "2400x" ) }}
+          {{ end }}
+        {{ end }}
+        <!-- Overlay -->
+        <div
+          class="absolute inset-0 bg-black"
+          style="opacity: {{ $overlay }};"></div>
+        <!-- Subtle gradient for readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
+      </div>
+
+      <!-- Content (wider than default container to avoid "too narrow" look on large screens) -->
+      <div class="relative mx-auto w-full max-w-[1600px] px-4 xl:px-10">
+        <div
+          class="flex flex-col justify-center py-16 lg:py-20"
+          style="min-height: calc(100vh - var(--site-header-h));">
+              {{ with .tagline }}
+                <p class="text-white/90 text-lg lg:text-xl font-semibold tracking-wide">
+                  {{ . | markdownify }}
+                </p>
               {{ end }}
-            {{ end }}
-          </div>
-          <div class="col-12">
-            {{/* image modules comes from https://github.com/gethugothemes/hugo-modules/tree/master/images */}}
-            {{ partial "image" (dict "Src" .image "Alt" "Banner image" "Loading" "eager" "Class" "mx-auto lg:!max-w-[800px]" "DisplayXL" "800x" ) }}
-          </div>
+              <h1 class="mt-3 text-white text-h2 lg:text-h1 leading-tight">
+                {{ .title | markdownify }}
+              </h1>
+              {{ with .subtitle }}
+                <p class="mt-5 max-w-4xl text-white/85 text-lg lg:text-xl leading-relaxed">
+                  {{ . | markdownify }}
+                </p>
+              {{ end }}
+
+              <div class="mt-8 flex flex-wrap gap-3">
+                {{ with .button }}
+                  {{ if .enable }}
+                    <a
+                      class="btn btn-primary"
+                      href="{{ .link | relURL }}"
+                      {{ if strings.HasPrefix .link `http` }}
+                        target="_blank" rel="noopener"
+                      {{ end }}>
+                      {{ .label }}
+                      <i class="fa fa-arrow-right pl-2"></i>
+                    </a>
+                  {{ end }}
+                {{ end }}
+                {{ with .button_secondary }}
+                  {{ if .enable }}
+                    <a
+                      class="btn btn-outline-primary bg-white/10 text-white border-white/40 hover:bg-white/20 hover:border-white/60"
+                      href="{{ .link | relURL }}"
+                      {{ if strings.HasPrefix .link `http` }}
+                        target="_blank" rel="noopener"
+                      {{ end }}>
+                      {{ .label }}
+                    </a>
+                  {{ end }}
+                {{ end }}
+              </div>
         </div>
       </div>
     </section>

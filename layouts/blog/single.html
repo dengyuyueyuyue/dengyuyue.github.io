@@ -83,6 +83,50 @@
                     iframe.setAttribute('src', basePath + originalSrc);
                   }
                 });
+
+                // Make blog post images zoomable (lightbox), similar to Elements gallery zoom.
+                // Works for plain <img> in Markdown/HTML inside `.content`.
+                function wrapImagesForLightbox() {
+                  const galleryId = 'post-' + (window.location.pathname || '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+                  document.querySelectorAll('.content img').forEach(function(img) {
+                    // Skip if already inside a link (or inside existing gallery/slider markup).
+                    if (!img || !img.getAttribute) return;
+                    if (img.closest('a')) return;
+                    if (img.closest('.gallery-slider, .swiper, .glightbox-container')) return;
+
+                    const src = img.getAttribute('src');
+                    if (!src) return;
+
+                    // Ensure cursor indicates zoom
+                    img.style.cursor = 'zoom-in';
+
+                    // Wrap with anchor for GLightbox
+                    const a = document.createElement('a');
+                    a.href = src;
+                    a.className = 'glightbox-post';
+                    a.setAttribute('data-gallery', galleryId);
+
+                    // Preserve layout: make anchor act like a block wrapper
+                    a.style.display = 'block';
+
+                    img.parentNode.insertBefore(a, img);
+                    a.appendChild(img);
+                  });
+                }
+
+                function initLightboxWhenReady(tries) {
+                  tries = tries || 0;
+                  if (typeof window.GLightbox === 'function') {
+                    window.GLightbox({ selector: '.glightbox-post' });
+                    return;
+                  }
+                  if (tries > 50) return; // ~5s max
+                  setTimeout(function() { initLightboxWhenReady(tries + 1); }, 100);
+                }
+
+                // Run after initial path fixes
+                wrapImagesForLightbox();
+                initLightboxWhenReady();
               })();
             </script>
             <div class="row items-start justify-between">
