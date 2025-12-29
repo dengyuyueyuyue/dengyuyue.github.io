@@ -215,6 +215,24 @@
   transform: rotate(45deg);
 }
 
+/* GLightbox: make the close "X" always visible and easy to tap */
+.glightbox-container .gclose,
+.glightbox-container .glightbox-close {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 999px !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  color: #fff !important;
+  top: 16px !important;
+  right: 16px !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25) !important;
+  opacity: 1 !important;
+}
+.glightbox-container .gclose:hover,
+.glightbox-container .glightbox-close:hover {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
 /* Fixed height for author cards */
 .authors-list .row > div {
   display: flex;

@@ -207,6 +207,15 @@ We fully respect plot-level data governance.
 
 {{< /callout >}}
 
+### Latitudinal patterns of standardized effect sizes of structural diversity and species richness on forest stability components
+- Across Barro Colorado Island (BCI), Palanan (PLN), and Luquillo (LUQ) FDPs
+
+<img
+  src="/images/inequal/Fig_Gini_SR_slopes_latitude_FULL_ADULT_combined.png"
+  alt="Effect sizes across latitude for structural diversity (Size Gini) and species richness (SR) on community stability, population stability, and species asynchrony (FULL vs ADULT)."
+  style="width: 100%; max-width: 1100px; margin: 1rem auto; display: block; border-radius: 8px;" />
+
+
 ---
 
 ## Interested in joining?
